@@ -57,6 +57,7 @@ public class LaboratoryDetailServiceImpl implements LaboratoryDetailService{
             roles.add(role);
         }
 
+        System.out.println("23123123");
         laboratoryDetail.setRoles(roles);
         laboratoryDetailRepository.updateLaboratoryDetail(nameLab, laboratoryDetail);
 
