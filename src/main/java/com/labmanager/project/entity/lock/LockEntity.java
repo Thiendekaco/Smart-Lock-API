@@ -21,7 +21,7 @@ public class LockEntity {
     @Column(name = "is_locked")
     private boolean isLocked;
 
-    @Column(name = "model_id")
+    @Column(name = "id_model")
     private String modelId;
 
     @Column(name = "create_at")

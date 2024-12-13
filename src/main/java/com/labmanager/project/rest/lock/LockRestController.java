@@ -30,7 +30,7 @@ public class LockRestController {
         try {
             return ResponseEntity.ok(lockService.createNewLock(name, modelId));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Cannot create new lock");
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

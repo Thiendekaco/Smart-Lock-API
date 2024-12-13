@@ -6,9 +6,11 @@ import com.labmanager.project.dao.lock.LockRepository;
 import com.labmanager.project.entity.authentication.AuthenticationEntity;
 import com.labmanager.project.entity.lock.LockEntity;
 import com.labmanager.project.utils.AESUtil;
+import com.labmanager.project.utils.UUIDUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -32,22 +34,21 @@ public class LockServiceImpl implements LockService {
         lockEntity.setModelId(modelId);
         lockEntity.setLocked(false);
         lockEntity.setRemainingOpen(0);
+        lockEntity.setCreatedAt(LocalDateTime.now());
 
-        String privateKey = UUID.randomUUID().toString();
-        String secretKey = "SECRET_KEY";
-
-
-        lockRepository.save(lockEntity);
+        String privateKey = UUIDUtil.generateBase32UUID();
+        String secretKey = "b'*\\xe7\\x0e![io\\x9b]\\xcf";;
 
 
         String privateKeyEncrypted = AESUtil.encrypt(privateKey, secretKey);
         AuthenticationEntity authenticationEntity = new AuthenticationEntity();
         authenticationEntity.setPrivateKey(privateKeyEncrypted);
         authenticationEntity.setDurationTime(30);
+        authenticationEntity.setLock(lockEntity);
 
-        authenticationRepository.save(authenticationEntity);
+        lockEntity.setAuthentication(authenticationEntity);
 
-
+        lockRepository.save(lockEntity);
         return privateKey;
     }
 
